@@ -1,3 +1,19 @@
+
+## Admin Usage
+
+To get a webkey for an admin UI:
+
+```bash
+npm run bootstrap
+http://localhost:1341/ocaps/#s=...
+```
+
+Then start the server with `npm start` and visit the webkey address.
+
+
+Start with "make game.gameBoard MyGame" to generate (and save) your initial
+webkey, whose state includes a key pair for use on RChain.
+
 ## Contents
 
  - `server.js` - node.js Express app
