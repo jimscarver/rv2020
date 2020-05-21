@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "init": "echo generate key for deployment by this service; node run.cjs ./init.js",
+    "create-election": "echo create election: deploy ballot to chain; exit 1",
+    "grant": "echo grant one member a right to cast a ballot; exit 1",
+    "cast": "echo cast a vote; exit 1",
+    "tally": "echo tally votes cast so far; exit 1"
+  },
+  "type": "module",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.0.3",
+    "@tgrospic/rnode-grpc-js": "^0.8.5",
+    "elliptic": "^6.5.2",
+    "google-protobuf": "^3.12.1",
+    "temp": "^0.9.1"
+  },
+  "devDependencies": {
+    "grpc-tools": "^1.8.1",
+    "protobufjs": "^6.9.0"
+  }
+}
