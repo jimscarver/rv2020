@@ -48,6 +48,7 @@ goog.exportSymbol('proto.Expr', null, global);
 goog.exportSymbol('proto.GDeployId', null, global);
 goog.exportSymbol('proto.GDeployerId', null, global);
 goog.exportSymbol('proto.GPrivate', null, global);
+goog.exportSymbol('proto.GSysAuthToken', null, global);
 goog.exportSymbol('proto.GUnforgeable', null, global);
 goog.exportSymbol('proto.KeyValuePair', null, global);
 goog.exportSymbol('proto.ListBindPatterns', null, global);
@@ -3478,8 +3479,7 @@ proto.New.toObject = function(includeInstance, msg) {
     bindcount: jspb.Message.getFieldWithDefault(msg, 1, 0),
     p: (f = msg.getP()) && proto.Par.toObject(includeInstance, f),
     uriList: jspb.Message.getRepeatedField(msg, 3),
-    deployid: (f = msg.getDeployid()) && proto.DeployId.toObject(includeInstance, f),
-    deployerid: (f = msg.getDeployerid()) && proto.DeployerId.toObject(includeInstance, f),
+    injectionsMap: (f = msg.getInjectionsMap()) ? f.toObject(includeInstance, proto.Par.toObject) : [],
     locallyfree: msg.getLocallyfree_asB64()
   };
 
@@ -3531,16 +3531,12 @@ proto.New.deserializeBinaryFromReader = function(msg, reader) {
       msg.addUri(value);
       break;
     case 4:
-      var value = new proto.DeployId;
-      reader.readMessage(value,proto.DeployId.deserializeBinaryFromReader);
-      msg.setDeployid(value);
+      var value = msg.getInjectionsMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.Par.deserializeBinaryFromReader, "");
+         });
       break;
     case 5:
-      var value = new proto.DeployerId;
-      reader.readMessage(value,proto.DeployerId.deserializeBinaryFromReader);
-      msg.setDeployerid(value);
-      break;
-    case 6:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setLocallyfree(value);
       break;
@@ -3595,26 +3591,14 @@ proto.New.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getDeployid();
-  if (f != null) {
-    writer.writeMessage(
-      4,
-      f,
-      proto.DeployId.serializeBinaryToWriter
-    );
-  }
-  f = message.getDeployerid();
-  if (f != null) {
-    writer.writeMessage(
-      5,
-      f,
-      proto.DeployerId.serializeBinaryToWriter
-    );
+  f = message.getInjectionsMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(4, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.Par.serializeBinaryToWriter);
   }
   f = message.getLocallyfree_asU8();
   if (f.length > 0) {
     writer.writeBytes(
-      6,
+      5,
       f
     );
   }
@@ -3696,76 +3680,34 @@ proto.New.prototype.clearUriList = function() {
 
 
 /**
- * optional DeployId deployId = 4;
- * @return {?proto.DeployId}
+ * map<string, Par> injections = 4;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,!proto.Par>}
  */
-proto.New.prototype.getDeployid = function() {
-  return /** @type{?proto.DeployId} */ (
-    jspb.Message.getWrapperField(this, proto.DeployId, 4));
+proto.New.prototype.getInjectionsMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,!proto.Par>} */ (
+      jspb.Message.getMapField(this, 4, opt_noLazyCreate,
+      proto.Par));
 };
 
 
-/** @param {?proto.DeployId|undefined} value */
-proto.New.prototype.setDeployid = function(value) {
-  jspb.Message.setWrapperField(this, 4, value);
-};
-
-
-proto.New.prototype.clearDeployid = function() {
-  this.setDeployid(undefined);
+proto.New.prototype.clearInjectionsMap = function() {
+  this.getInjectionsMap().clear();
 };
 
 
 /**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.New.prototype.hasDeployid = function() {
-  return jspb.Message.getField(this, 4) != null;
-};
-
-
-/**
- * optional DeployerId deployerId = 5;
- * @return {?proto.DeployerId}
- */
-proto.New.prototype.getDeployerid = function() {
-  return /** @type{?proto.DeployerId} */ (
-    jspb.Message.getWrapperField(this, proto.DeployerId, 5));
-};
-
-
-/** @param {?proto.DeployerId|undefined} value */
-proto.New.prototype.setDeployerid = function(value) {
-  jspb.Message.setWrapperField(this, 5, value);
-};
-
-
-proto.New.prototype.clearDeployerid = function() {
-  this.setDeployerid(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.New.prototype.hasDeployerid = function() {
-  return jspb.Message.getField(this, 5) != null;
-};
-
-
-/**
- * optional bytes locallyFree = 6;
+ * optional bytes locallyFree = 5;
  * @return {string}
  */
 proto.New.prototype.getLocallyfree = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
 /**
- * optional bytes locallyFree = 6;
+ * optional bytes locallyFree = 5;
  * This is a type-conversion wrapper around `getLocallyfree()`
  * @return {string}
  */
@@ -3776,7 +3718,7 @@ proto.New.prototype.getLocallyfree_asB64 = function() {
 
 
 /**
- * optional bytes locallyFree = 6;
+ * optional bytes locallyFree = 5;
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getLocallyfree()`
@@ -3790,7 +3732,7 @@ proto.New.prototype.getLocallyfree_asU8 = function() {
 
 /** @param {!(string|Uint8Array)} value */
 proto.New.prototype.setLocallyfree = function(value) {
-  jspb.Message.setProto3BytesField(this, 6, value);
+  jspb.Message.setProto3BytesField(this, 5, value);
 };
 
 
@@ -12624,7 +12566,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<!Array<number>>}
  * @const
  */
-proto.GUnforgeable.oneofGroups_ = [[1,2,3]];
+proto.GUnforgeable.oneofGroups_ = [[1,2,3,4]];
 
 /**
  * @enum {number}
@@ -12633,7 +12575,8 @@ proto.GUnforgeable.UnfInstanceCase = {
   UNF_INSTANCE_NOT_SET: 0,
   G_PRIVATE_BODY: 1,
   G_DEPLOY_ID_BODY: 2,
-  G_DEPLOYER_ID_BODY: 3
+  G_DEPLOYER_ID_BODY: 3,
+  G_SYS_AUTH_TOKEN_BODY: 4
 };
 
 /**
@@ -12674,7 +12617,8 @@ proto.GUnforgeable.toObject = function(includeInstance, msg) {
   var f, obj = {
     gPrivateBody: (f = msg.getGPrivateBody()) && proto.GPrivate.toObject(includeInstance, f),
     gDeployIdBody: (f = msg.getGDeployIdBody()) && proto.GDeployId.toObject(includeInstance, f),
-    gDeployerIdBody: (f = msg.getGDeployerIdBody()) && proto.GDeployerId.toObject(includeInstance, f)
+    gDeployerIdBody: (f = msg.getGDeployerIdBody()) && proto.GDeployerId.toObject(includeInstance, f),
+    gSysAuthTokenBody: (f = msg.getGSysAuthTokenBody()) && proto.GSysAuthToken.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -12725,6 +12669,11 @@ proto.GUnforgeable.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.GDeployerId;
       reader.readMessage(value,proto.GDeployerId.deserializeBinaryFromReader);
       msg.setGDeployerIdBody(value);
+      break;
+    case 4:
+      var value = new proto.GSysAuthToken;
+      reader.readMessage(value,proto.GSysAuthToken.deserializeBinaryFromReader);
+      msg.setGSysAuthTokenBody(value);
       break;
     default:
       reader.skipField();
@@ -12777,6 +12726,14 @@ proto.GUnforgeable.serializeBinaryToWriter = function(message, writer) {
       3,
       f,
       proto.GDeployerId.serializeBinaryToWriter
+    );
+  }
+  f = message.getGSysAuthTokenBody();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.GSysAuthToken.serializeBinaryToWriter
     );
   }
 };
@@ -12869,6 +12826,36 @@ proto.GUnforgeable.prototype.clearGDeployerIdBody = function() {
  */
 proto.GUnforgeable.prototype.hasGDeployerIdBody = function() {
   return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional GSysAuthToken g_sys_auth_token_body = 4;
+ * @return {?proto.GSysAuthToken}
+ */
+proto.GUnforgeable.prototype.getGSysAuthTokenBody = function() {
+  return /** @type{?proto.GSysAuthToken} */ (
+    jspb.Message.getWrapperField(this, proto.GSysAuthToken, 4));
+};
+
+
+/** @param {?proto.GSysAuthToken|undefined} value */
+proto.GUnforgeable.prototype.setGSysAuthTokenBody = function(value) {
+  jspb.Message.setOneofWrapperField(this, 4, proto.GUnforgeable.oneofGroups_[0], value);
+};
+
+
+proto.GUnforgeable.prototype.clearGSysAuthTokenBody = function() {
+  this.setGSysAuthTokenBody(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.GUnforgeable.prototype.hasGSysAuthTokenBody = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
@@ -13367,6 +13354,122 @@ proto.GDeployerId.prototype.getPublickey_asU8 = function() {
 /** @param {!(string|Uint8Array)} value */
 proto.GDeployerId.prototype.setPublickey = function(value) {
   jspb.Message.setProto3BytesField(this, 1, value);
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.GSysAuthToken = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.GSysAuthToken, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.GSysAuthToken.displayName = 'proto.GSysAuthToken';
+}
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.GSysAuthToken.prototype.toObject = function(opt_includeInstance) {
+  return proto.GSysAuthToken.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.GSysAuthToken} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.GSysAuthToken.toObject = function(includeInstance, msg) {
+  var f, obj = {
+
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.GSysAuthToken}
+ */
+proto.GSysAuthToken.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.GSysAuthToken;
+  return proto.GSysAuthToken.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.GSysAuthToken} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.GSysAuthToken}
+ */
+proto.GSysAuthToken.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.GSysAuthToken.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.GSysAuthToken.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.GSysAuthToken} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.GSysAuthToken.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
 };
 
 

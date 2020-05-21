@@ -1,5 +1,5 @@
 /**
- * Generated TypeScript definitions for RNode v0.9.12
+ * Generated TypeScript definitions for RNode v0.9.23
  */
 declare module "@tgrospic/rnode-grpc-js" {
   import { ec } from 'elliptic'
@@ -155,22 +155,25 @@ declare module "@tgrospic/rnode-grpc-js" {
   export function rnodeProtobuf({protoSchema}: {protoSchema: Object}): TypesBinary
 
   interface DeployService {
-    DoDeploy(_?: DeployData): Promise<DeployServiceResponse>
-    getBlock(_?: BlockQuery): Promise<BlockQueryResponse>
+    doDeploy(_?: DeployDataProto): Promise<DeployResponse>
+    getBlock(_?: BlockQuery): Promise<BlockResponse>
     visualizeDag(_?: VisualizeDagQuery): Promise<VisualizeBlocksResponse[]>
-    machineVerifiableDag(_?: MachineVerifyQuery): Promise<Unit>
-    showMainChain(_?: BlocksQuery): Promise<LightBlockInfo[]>
-    getBlocks(_?: BlocksQuery): Promise<LightBlockInfo[]>
+    machineVerifiableDag(_?: MachineVerifyQuery): Promise<MachineVerifyResponse>
+    showMainChain(_?: BlocksQuery): Promise<BlockInfoResponse[]>
+    getBlocks(_?: BlocksQuery): Promise<BlockInfoResponse[]>
     listenForDataAtName(_: DataAtNameQuery): Promise<ListeningNameDataResponse>
-    listenForContinuationAtName(_: ContinuationAtNameQuery): Promise<ListeningNameContinuationResponse>
-    findBlockWithDeploy(_?: FindDeployInBlockQuery): Promise<BlockQueryResponse>
-    findDeploy(_?: FindDeployQuery): Promise<LightBlockQueryResponse>
+    listenForContinuationAtName(_: ContinuationAtNameQuery): Promise<ContinuationAtNameResponse>
+    findDeploy(_?: FindDeployQuery): Promise<FindDeployResponse>
     previewPrivateNames(_?: PrivateNamePreviewQuery): Promise<PrivateNamePreviewResponse>
-    lastFinalizedBlock(_?: LastFinalizedBlockQuery): Promise<BlockQueryResponse>
+    lastFinalizedBlock(_?: LastFinalizedBlockQuery): Promise<LastFinalizedBlockResponse>
+    isFinalized(_?: IsFinalizedQuery): Promise<IsFinalizedResponse>
+    bondStatus(_?: BondStatusQuery): Promise<BondStatusResponse>
+    exploratoryDeploy(_?: ExploratoryDeployQuery): Promise<ExploratoryDeployResponse>
+    getBlocksByHeights(_?: BlocksQueryByHeight): Promise<BlockInfoResponse[]>
   }
 
   interface ProposeService {
-    propose(_?: PrintUnmatchedSendsQuery): Promise<Unit>
+    propose(_?: PrintUnmatchedSendsQuery): Promise<ProposeResponse>
   }
 
   interface Repl {
@@ -191,29 +194,29 @@ declare module "@tgrospic/rnode-grpc-js" {
     validafterblocknumber?: Number | Long
   }
 
-  interface HasBlockRequest {
+  interface HasBlockRequestProto {
     hash?: Uint8Array /* bytes */
   }
 
-  interface HasBlock {
+  interface HasBlockProto {
     hash?: Uint8Array /* bytes */
   }
 
-  interface BlockRequest {
+  interface BlockRequestProto {
     hash?: Uint8Array /* bytes */
   }
 
-  interface ForkChoiceTipRequest {
+  interface ForkChoiceTipRequestProto {
     
   }
 
-  interface ApprovedBlockCandidate {
-    block: BlockMessage
+  interface ApprovedBlockCandidateProto {
+    block: BlockMessageProto
     requiredsigs?: number /* int32 */
   }
 
-  interface UnapprovedBlock {
-    candidate: ApprovedBlockCandidate
+  interface UnapprovedBlockProto {
+    candidate: ApprovedBlockCandidateProto
     timestamp?: number | Long /* int64 */
     duration?: number | Long /* int64 */
   }
@@ -224,30 +227,30 @@ declare module "@tgrospic/rnode-grpc-js" {
     sig?: Uint8Array /* bytes */
   }
 
-  interface BlockApproval {
-    candidate: ApprovedBlockCandidate
+  interface BlockApprovalProto {
+    candidate: ApprovedBlockCandidateProto
     sig: Signature
   }
 
-  interface ApprovedBlock {
-    candidate: ApprovedBlockCandidate
+  interface ApprovedBlockProto {
+    candidate: ApprovedBlockCandidateProto
     sigsList?: Signature[]
   }
 
-  interface ApprovedBlockRequest {
+  interface ApprovedBlockRequestProto {
     identifier?: string
   }
 
-  interface NoApprovedBlockAvailable {
+  interface NoApprovedBlockAvailableProto {
     identifier?: string
     nodeidentifer?: string
   }
 
-  interface BlockMessage {
+  interface BlockMessageProto {
     blockhash?: Uint8Array /* bytes */
-    header: Header
-    body: Body
-    justificationsList?: Justification[]
+    header: HeaderProto
+    body: BodyProto
+    justificationsList?: JustificationProto[]
     sender?: Uint8Array /* bytes */
     seqnum?: number /* int32 */
     sig?: Uint8Array /* bytes */
@@ -256,28 +259,30 @@ declare module "@tgrospic/rnode-grpc-js" {
     extrabytes?: Uint8Array /* bytes */
   }
 
+  interface BlockHashMessageProto {
+    hash?: Uint8Array /* bytes */
+    blockcreator?: Uint8Array /* bytes */
+  }
+
   interface BlockMetadataInternal {
     blockhash?: Uint8Array /* bytes */
     parentsList?: Uint8Array[] /* bytes */
     sender?: Uint8Array /* bytes */
-    justificationsList?: Justification[]
-    bondsList?: Bond[]
+    justificationsList?: JustificationProto[]
+    bondsList?: BondProto[]
     blocknum?: number | Long /* int64 */
     seqnum?: number /* int32 */
     invalid?: boolean /* bool */
   }
 
-  interface Header {
+  interface HeaderProto {
     parentshashlistList?: Uint8Array[] /* bytes */
-    poststatehash?: Uint8Array /* bytes */
-    deployshash?: Uint8Array /* bytes */
     timestamp?: number | Long /* int64 */
     version?: number | Long /* int64 */
-    deploycount?: number /* int32 */
     extrabytes?: Uint8Array /* bytes */
   }
 
-  interface DeployData {
+  interface DeployDataProto {
     deployer?: Uint8Array /* bytes */
     term?: string
     timestamp?: number | Long /* int64 */
@@ -288,58 +293,83 @@ declare module "@tgrospic/rnode-grpc-js" {
     validafterblocknumber?: number | Long /* int64 */
   }
 
-  interface ProcessedDeploy {
-    deploy: DeployData
+  interface ProcessedDeployProto {
+    deploy: DeployDataProto
     cost: PCost
-    deploylogList?: Event[]
-    paymentlogList?: Event[]
+    deploylogList?: EventProto[]
     errored?: boolean /* bool */
+    systemdeployerror?: string
   }
 
-  interface Body {
-    state: RChainState
-    deploysList?: ProcessedDeploy[]
+  interface SlashSystemDeployDataProto {
+    invalidblockhash?: Uint8Array /* bytes */
+    issuerpublickey?: Uint8Array /* bytes */
+  }
+
+  interface CloseBlockSystemDeployDataProto {
+    
+  }
+
+  interface SystemDeployDataProto {
+    slashsystemdeploy?: SlashSystemDeployDataProto
+    closeblocksystemdeploy?: CloseBlockSystemDeployDataProto
+  }
+
+  interface ProcessedSystemDeployProto {
+    systemdeploy: SystemDeployDataProto
+    deploylogList?: EventProto[]
+    errormsg?: string
+  }
+
+  interface BodyProto {
+    state: RChainStateProto
+    deploysList?: ProcessedDeployProto[]
+    systemdeploysList?: ProcessedSystemDeployProto[]
     extrabytes?: Uint8Array /* bytes */
   }
 
-  interface Justification {
+  interface JustificationProto {
     validator?: Uint8Array /* bytes */
     latestblockhash?: Uint8Array /* bytes */
   }
 
-  interface RChainState {
+  interface RChainStateProto {
     prestatehash?: Uint8Array /* bytes */
     poststatehash?: Uint8Array /* bytes */
-    bondsList?: Bond[]
+    bondsList?: BondProto[]
     blocknumber?: number | Long /* int64 */
   }
 
-  interface Event {
-    produce?: ProduceEvent
-    consume?: ConsumeEvent
-    comm?: CommEvent
+  interface EventProto {
+    produce?: ProduceEventProto
+    consume?: ConsumeEventProto
+    comm?: CommEventProto
   }
 
-  interface ProduceEvent {
+  interface ProduceEventProto {
     channelshash?: Uint8Array /* bytes */
     hash?: Uint8Array /* bytes */
     persistent?: boolean /* bool */
-    sequencenumber?: number /* int32 */
+    timesrepeated?: number /* int32 */
   }
 
-  interface ConsumeEvent {
+  interface ConsumeEventProto {
     channelshashesList?: Uint8Array[] /* bytes */
     hash?: Uint8Array /* bytes */
     persistent?: boolean /* bool */
-    sequencenumber?: number /* int32 */
   }
 
-  interface CommEvent {
-    consume: ConsumeEvent
-    producesList?: ProduceEvent[]
+  interface CommEventProto {
+    consume: ConsumeEventProto
+    producesList?: ProduceEventProto[]
+    peeksList?: PeekProto[]
   }
 
-  interface Bond {
+  interface PeekProto {
+    channelindex?: number /* int32 */
+  }
+
+  interface BondProto {
     validator?: Uint8Array /* bytes */
     stake?: number | Long /* int64 */
   }
@@ -348,17 +378,17 @@ declare module "@tgrospic/rnode-grpc-js" {
     deployid?: Uint8Array /* bytes */
   }
 
-  interface FindDeployInBlockQuery {
-    user?: Uint8Array /* bytes */
-    timestamp?: number | Long /* int64 */
-  }
-
   interface BlockQuery {
     hash?: string
   }
 
   interface BlocksQuery {
     depth?: number /* int32 */
+  }
+
+  interface BlocksQueryByHeight {
+    startblocknumber?: number | Long /* int64 */
+    endblocknumber?: number | Long /* int64 */
   }
 
   interface DataAtNameQuery {
@@ -371,43 +401,13 @@ declare module "@tgrospic/rnode-grpc-js" {
     namesList?: Par[]
   }
 
-  interface DeployServiceResponse {
-    message?: string
-  }
-
-  interface BlockQueryResponse {
-    blockinfo: BlockInfo
-  }
-
-  interface LightBlockQueryResponse {
-    blockinfo: LightBlockInfo
-  }
-
   interface VisualizeDagQuery {
     depth?: number /* int32 */
     showjustificationlines?: boolean /* bool */
   }
 
-  interface VisualizeBlocksResponse {
-    content?: string
-  }
-
   interface MachineVerifyQuery {
     
-  }
-
-  interface MachineVerifyResponse {
-    content?: string
-  }
-
-  interface ListeningNameDataResponse {
-    blockresultsList?: DataWithBlockInfo[]
-    length?: number /* int32 */
-  }
-
-  interface ListeningNameContinuationResponse {
-    blockresultsList?: ContinuationsWithBlockInfo[]
-    length?: number /* int32 */
   }
 
   interface PrivateNamePreviewQuery {
@@ -416,47 +416,66 @@ declare module "@tgrospic/rnode-grpc-js" {
     nameqty?: number /* int32 */
   }
 
-  interface PrivateNamePreviewResponse {
-    idsList?: Uint8Array[] /* bytes */
-  }
-
   interface LastFinalizedBlockQuery {
     
   }
 
-  interface LastFinalizedBlockResponse {
-    blockinfo: BlockInfo
+  interface IsFinalizedQuery {
+    hash?: string
+  }
+
+  interface BondStatusQuery {
+    publickey?: Uint8Array /* bytes */
+  }
+
+  interface ExploratoryDeployQuery {
+    term?: string
+  }
+
+  interface BondInfo {
+    validator?: string
+    stake?: number | Long /* int64 */
+  }
+
+  interface DeployInfo {
+    deployer?: string
+    term?: string
+    timestamp?: number | Long /* int64 */
+    sig?: string
+    sigalgorithm?: string
+    phloprice?: number | Long /* int64 */
+    phlolimit?: number | Long /* int64 */
+    validafterblocknumber?: number | Long /* int64 */
+    cost?: number | Long /* uint64 */
+    errored?: boolean /* bool */
+    systemdeployerror?: string
   }
 
   interface LightBlockInfo {
     blockhash?: string
-    blocksize?: string
-    blocknumber?: number | Long /* int64 */
-    version?: number | Long /* int64 */
-    deploycount?: number /* int32 */
-    tuplespacehash?: string
-    timestamp?: number | Long /* int64 */
-    faulttolerance?: number /* float */
-    mainparenthash?: string
-    parentshashlistList?: string[]
     sender?: string
+    seqnum?: number | Long /* int64 */
+    sig?: string
+    sigalgorithm?: string
+    shardid?: string
+    extrabytes?: Uint8Array /* bytes */
+    version?: number | Long /* int64 */
+    timestamp?: number | Long /* int64 */
+    headerextrabytes?: Uint8Array /* bytes */
+    parentshashlistList?: string[]
+    blocknumber?: number | Long /* int64 */
+    prestatehash?: string
+    poststatehash?: string
+    bodyextrabytes?: Uint8Array /* bytes */
+    bondsList?: BondInfo[]
+    blocksize?: string
+    deploycount?: number /* int32 */
+    faulttolerance?: number /* float */
   }
 
   interface BlockInfo {
-    blockhash?: string
-    blocksize?: string
-    blocknumber?: number | Long /* int64 */
-    version?: number | Long /* int64 */
-    deploycount?: number /* int32 */
-    tuplespacehash?: string
-    timestamp?: number | Long /* int64 */
-    faulttolerance?: number /* float */
-    mainparenthash?: string
-    parentshashlistList?: string[]
-    sender?: string
-    shardid?: string
-    bondsvalidatorlistList?: string[]
-    deploycostList?: string[]
+    blockinfo: LightBlockInfo
+    deploysList?: DeployInfo[]
   }
 
   interface DataWithBlockInfo {
@@ -474,21 +493,78 @@ declare module "@tgrospic/rnode-grpc-js" {
     postblockcontinuation: Par
   }
 
+  interface ExploratoryDeployResponse {
+    result?: DataWithBlockInfo
+  }
+
+  interface DeployResponse {
+    result?: string
+  }
+
+  interface BlockResponse {
+    blockinfo?: BlockInfo
+  }
+
+  interface VisualizeBlocksResponse {
+    content?: string
+  }
+
+  interface MachineVerifyResponse {
+    content?: string
+  }
+
+  interface BlockInfoResponse {
+    blockinfo?: LightBlockInfo
+  }
+
+  interface ListeningNameDataResponse {
+    payload?: ListeningNameDataPayload
+  }
+
+  interface ListeningNameDataPayload {
+    blockinfoList?: DataWithBlockInfo[]
+    length?: number /* int32 */
+  }
+
+  interface ContinuationAtNameResponse {
+    payload?: ContinuationAtNamePayload
+  }
+
+  interface ContinuationAtNamePayload {
+    blockresultsList?: ContinuationsWithBlockInfo[]
+    length?: number /* int32 */
+  }
+
+  interface FindDeployResponse {
+    blockinfo?: LightBlockInfo
+  }
+
+  interface PrivateNamePreviewResponse {
+    payload?: PrivateNamePreviewPayload
+  }
+
+  interface PrivateNamePreviewPayload {
+    idsList?: Uint8Array[] /* bytes */
+  }
+
+  interface LastFinalizedBlockResponse {
+    blockinfo?: BlockInfo
+  }
+
+  interface IsFinalizedResponse {
+    isfinalized?: boolean /* bool */
+  }
+
+  interface BondStatusResponse {
+    isbonded?: boolean /* bool */
+  }
+
+  interface ProposeResponse {
+    result?: string
+  }
+
   interface PrintUnmatchedSendsQuery {
     printunmatchedsends?: boolean /* bool */
-  }
-
-  interface CmdRequest {
-    line?: string
-  }
-
-  interface EvalRequest {
-    program?: string
-    printunmatchedsendsonly?: boolean /* bool */
-  }
-
-  interface ReplResponse {
-    output?: string
   }
 
   interface Par {
@@ -574,8 +650,7 @@ declare module "@tgrospic/rnode-grpc-js" {
     bindcount?: number /* sint32 */
     p: Par
     uriList?: string[]
-    deployid: DeployId
-    deployerid: DeployerId
+    injections: Par
     locallyfree?: Uint8Array /* bytes */
   }
 
@@ -795,6 +870,7 @@ declare module "@tgrospic/rnode-grpc-js" {
     gPrivateBody?: GPrivate
     gDeployIdBody?: GDeployId
     gDeployerIdBody?: GDeployerId
+    gSysAuthTokenBody?: GSysAuthToken
   }
 
   interface GPrivate {
@@ -809,22 +885,25 @@ declare module "@tgrospic/rnode-grpc-js" {
     publickey?: Uint8Array /* bytes */
   }
 
-  interface EitherAny {
-    typeUrl?: string
-    value?: Uint8Array /* bytes */
+  interface GSysAuthToken {
+    
   }
 
-  interface EitherError {
+  interface ServiceError {
     messagesList?: string[]
   }
 
-  interface EitherSuccess {
-    response: EitherAny
+  interface CmdRequest {
+    line?: string
   }
 
-  interface Either {
-    error?: EitherError
-    success?: EitherSuccess
+  interface EvalRequest {
+    program?: string
+    printunmatchedsendsonly?: boolean /* bool */
+  }
+
+  interface ReplResponse {
+    output?: string
   }
 
   // Protobuf binary serializer
@@ -847,58 +926,74 @@ declare module "@tgrospic/rnode-grpc-js" {
   // Binary operations (serialize / deserialize) for all types
   // - serialize / deserialize functions exposed from generated JS objects
   interface TypesBinary {
-    HasBlockRequest: BinaryOp<HasBlockRequest>
-    HasBlock: BinaryOp<HasBlock>
-    BlockRequest: BinaryOp<BlockRequest>
-    ForkChoiceTipRequest: BinaryOp<ForkChoiceTipRequest>
-    ApprovedBlockCandidate: BinaryOp<ApprovedBlockCandidate>
-    UnapprovedBlock: BinaryOp<UnapprovedBlock>
+    HasBlockRequestProto: BinaryOp<HasBlockRequestProto>
+    HasBlockProto: BinaryOp<HasBlockProto>
+    BlockRequestProto: BinaryOp<BlockRequestProto>
+    ForkChoiceTipRequestProto: BinaryOp<ForkChoiceTipRequestProto>
+    ApprovedBlockCandidateProto: BinaryOp<ApprovedBlockCandidateProto>
+    UnapprovedBlockProto: BinaryOp<UnapprovedBlockProto>
     Signature: BinaryOp<Signature>
-    BlockApproval: BinaryOp<BlockApproval>
-    ApprovedBlock: BinaryOp<ApprovedBlock>
-    ApprovedBlockRequest: BinaryOp<ApprovedBlockRequest>
-    NoApprovedBlockAvailable: BinaryOp<NoApprovedBlockAvailable>
-    BlockMessage: BinaryOp<BlockMessage>
+    BlockApprovalProto: BinaryOp<BlockApprovalProto>
+    ApprovedBlockProto: BinaryOp<ApprovedBlockProto>
+    ApprovedBlockRequestProto: BinaryOp<ApprovedBlockRequestProto>
+    NoApprovedBlockAvailableProto: BinaryOp<NoApprovedBlockAvailableProto>
+    BlockMessageProto: BinaryOp<BlockMessageProto>
+    BlockHashMessageProto: BinaryOp<BlockHashMessageProto>
     BlockMetadataInternal: BinaryOp<BlockMetadataInternal>
-    Header: BinaryOp<Header>
-    DeployData: BinaryOp<DeployData>
-    ProcessedDeploy: BinaryOp<ProcessedDeploy>
-    Body: BinaryOp<Body>
-    Justification: BinaryOp<Justification>
-    RChainState: BinaryOp<RChainState>
-    Event: BinaryOp<Event>
-    ProduceEvent: BinaryOp<ProduceEvent>
-    ConsumeEvent: BinaryOp<ConsumeEvent>
-    CommEvent: BinaryOp<CommEvent>
-    Bond: BinaryOp<Bond>
+    HeaderProto: BinaryOp<HeaderProto>
+    DeployDataProto: BinaryOp<DeployDataProto>
+    ProcessedDeployProto: BinaryOp<ProcessedDeployProto>
+    SlashSystemDeployDataProto: BinaryOp<SlashSystemDeployDataProto>
+    CloseBlockSystemDeployDataProto: BinaryOp<CloseBlockSystemDeployDataProto>
+    SystemDeployDataProto: BinaryOp<SystemDeployDataProto>
+    ProcessedSystemDeployProto: BinaryOp<ProcessedSystemDeployProto>
+    BodyProto: BinaryOp<BodyProto>
+    JustificationProto: BinaryOp<JustificationProto>
+    RChainStateProto: BinaryOp<RChainStateProto>
+    EventProto: BinaryOp<EventProto>
+    ProduceEventProto: BinaryOp<ProduceEventProto>
+    ConsumeEventProto: BinaryOp<ConsumeEventProto>
+    CommEventProto: BinaryOp<CommEventProto>
+    PeekProto: BinaryOp<PeekProto>
+    BondProto: BinaryOp<BondProto>
     FindDeployQuery: BinaryOp<FindDeployQuery>
-    FindDeployInBlockQuery: BinaryOp<FindDeployInBlockQuery>
     BlockQuery: BinaryOp<BlockQuery>
     BlocksQuery: BinaryOp<BlocksQuery>
+    BlocksQueryByHeight: BinaryOp<BlocksQueryByHeight>
     DataAtNameQuery: BinaryOp<DataAtNameQuery>
     ContinuationAtNameQuery: BinaryOp<ContinuationAtNameQuery>
-    DeployServiceResponse: BinaryOp<DeployServiceResponse>
-    BlockQueryResponse: BinaryOp<BlockQueryResponse>
-    LightBlockQueryResponse: BinaryOp<LightBlockQueryResponse>
     VisualizeDagQuery: BinaryOp<VisualizeDagQuery>
-    VisualizeBlocksResponse: BinaryOp<VisualizeBlocksResponse>
     MachineVerifyQuery: BinaryOp<MachineVerifyQuery>
-    MachineVerifyResponse: BinaryOp<MachineVerifyResponse>
-    ListeningNameDataResponse: BinaryOp<ListeningNameDataResponse>
-    ListeningNameContinuationResponse: BinaryOp<ListeningNameContinuationResponse>
     PrivateNamePreviewQuery: BinaryOp<PrivateNamePreviewQuery>
-    PrivateNamePreviewResponse: BinaryOp<PrivateNamePreviewResponse>
     LastFinalizedBlockQuery: BinaryOp<LastFinalizedBlockQuery>
-    LastFinalizedBlockResponse: BinaryOp<LastFinalizedBlockResponse>
+    IsFinalizedQuery: BinaryOp<IsFinalizedQuery>
+    BondStatusQuery: BinaryOp<BondStatusQuery>
+    ExploratoryDeployQuery: BinaryOp<ExploratoryDeployQuery>
+    BondInfo: BinaryOp<BondInfo>
+    DeployInfo: BinaryOp<DeployInfo>
     LightBlockInfo: BinaryOp<LightBlockInfo>
     BlockInfo: BinaryOp<BlockInfo>
     DataWithBlockInfo: BinaryOp<DataWithBlockInfo>
     ContinuationsWithBlockInfo: BinaryOp<ContinuationsWithBlockInfo>
     WaitingContinuationInfo: BinaryOp<WaitingContinuationInfo>
+    ExploratoryDeployResponse: BinaryOp<ExploratoryDeployResponse>
+    DeployResponse: BinaryOp<DeployResponse>
+    BlockResponse: BinaryOp<BlockResponse>
+    VisualizeBlocksResponse: BinaryOp<VisualizeBlocksResponse>
+    MachineVerifyResponse: BinaryOp<MachineVerifyResponse>
+    BlockInfoResponse: BinaryOp<BlockInfoResponse>
+    ListeningNameDataResponse: BinaryOp<ListeningNameDataResponse>
+    ListeningNameDataPayload: BinaryOp<ListeningNameDataPayload>
+    ContinuationAtNameResponse: BinaryOp<ContinuationAtNameResponse>
+    ContinuationAtNamePayload: BinaryOp<ContinuationAtNamePayload>
+    FindDeployResponse: BinaryOp<FindDeployResponse>
+    PrivateNamePreviewResponse: BinaryOp<PrivateNamePreviewResponse>
+    PrivateNamePreviewPayload: BinaryOp<PrivateNamePreviewPayload>
+    LastFinalizedBlockResponse: BinaryOp<LastFinalizedBlockResponse>
+    IsFinalizedResponse: BinaryOp<IsFinalizedResponse>
+    BondStatusResponse: BinaryOp<BondStatusResponse>
+    ProposeResponse: BinaryOp<ProposeResponse>
     PrintUnmatchedSendsQuery: BinaryOp<PrintUnmatchedSendsQuery>
-    CmdRequest: BinaryOp<CmdRequest>
-    EvalRequest: BinaryOp<EvalRequest>
-    ReplResponse: BinaryOp<ReplResponse>
     Par: BinaryOp<Par>
     TaggedContinuation: BinaryOp<TaggedContinuation>
     ParWithRandom: BinaryOp<ParWithRandom>
@@ -950,9 +1045,10 @@ declare module "@tgrospic/rnode-grpc-js" {
     GPrivate: BinaryOp<GPrivate>
     GDeployId: BinaryOp<GDeployId>
     GDeployerId: BinaryOp<GDeployerId>
-    EitherAny: BinaryOp<EitherAny>
-    EitherError: BinaryOp<EitherError>
-    EitherSuccess: BinaryOp<EitherSuccess>
-    Either: BinaryOp<Either>
+    GSysAuthToken: BinaryOp<GSysAuthToken>
+    ServiceError: BinaryOp<ServiceError>
+    CmdRequest: BinaryOp<CmdRequest>
+    EvalRequest: BinaryOp<EvalRequest>
+    ReplResponse: BinaryOp<ReplResponse>
   }
 }

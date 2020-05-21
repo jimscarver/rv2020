@@ -1,13 +1,10 @@
 [
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "HasBlockRequest",
+    "name": "HasBlockRequestProto",
     "fields": {
       "hash": {
         "type": "bytes",
@@ -18,13 +15,10 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "HasBlock",
+    "name": "HasBlockProto",
     "fields": {
       "hash": {
         "type": "bytes",
@@ -35,13 +29,10 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "BlockRequest",
+    "name": "BlockRequestProto",
     "fields": {
       "hash": {
         "type": "bytes",
@@ -52,28 +43,22 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "ForkChoiceTipRequest",
+    "name": "ForkChoiceTipRequestProto",
     "fields": {},
     "nullables": []
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "ApprovedBlockCandidate",
+    "name": "ApprovedBlockCandidateProto",
     "fields": {
       "block": {
-        "type": "BlockMessage",
+        "type": "BlockMessageProto",
         "id": 1
       },
       "requiredsigs": {
@@ -85,16 +70,13 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "UnapprovedBlock",
+    "name": "UnapprovedBlockProto",
     "fields": {
       "candidate": {
-        "type": "ApprovedBlockCandidate",
+        "type": "ApprovedBlockCandidateProto",
         "id": 1
       },
       "timestamp": {
@@ -110,10 +92,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "Signature",
@@ -135,16 +114,13 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "BlockApproval",
+    "name": "BlockApprovalProto",
     "fields": {
       "candidate": {
-        "type": "ApprovedBlockCandidate",
+        "type": "ApprovedBlockCandidateProto",
         "id": 1
       },
       "sig": {
@@ -156,16 +132,13 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "ApprovedBlock",
+    "name": "ApprovedBlockProto",
     "fields": {
       "candidate": {
-        "type": "ApprovedBlockCandidate",
+        "type": "ApprovedBlockCandidateProto",
         "id": 1
       },
       "sigsList": {
@@ -178,13 +151,10 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "ApprovedBlockRequest",
+    "name": "ApprovedBlockRequestProto",
     "fields": {
       "identifier": {
         "type": "string",
@@ -195,13 +165,10 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "NoApprovedBlockAvailable",
+    "name": "NoApprovedBlockAvailableProto",
     "fields": {
       "identifier": {
         "type": "string",
@@ -216,29 +183,26 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "BlockMessage",
+    "name": "BlockMessageProto",
     "fields": {
       "blockhash": {
         "type": "bytes",
         "id": 1
       },
       "header": {
-        "type": "Header",
+        "type": "HeaderProto",
         "id": 2
       },
       "body": {
-        "type": "Body",
+        "type": "BodyProto",
         "id": 3
       },
       "justificationsList": {
         "rule": "repeated",
-        "type": "Justification",
+        "type": "JustificationProto",
         "id": 4
       },
       "sender": {
@@ -270,10 +234,25 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
+    ],
+    "type": "type",
+    "name": "BlockHashMessageProto",
+    "fields": {
+      "hash": {
+        "type": "bytes",
+        "id": 1
+      },
+      "blockcreator": {
+        "type": "bytes",
+        "id": 2
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
     ],
     "type": "type",
     "name": "BlockMetadataInternal",
@@ -296,7 +275,7 @@
       },
       "justificationsList": {
         "rule": "repeated",
-        "type": "Justification",
+        "type": "JustificationProto",
         "id": 4,
         "options": {
           "(scalapb.field).collection_type": "collection.immutable.List"
@@ -304,7 +283,7 @@
       },
       "bondsList": {
         "rule": "repeated",
-        "type": "Bond",
+        "type": "BondProto",
         "id": 5,
         "options": {
           "(scalapb.field).collection_type": "collection.immutable.List"
@@ -327,26 +306,15 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "Header",
+    "name": "HeaderProto",
     "fields": {
       "parentshashlistList": {
         "rule": "repeated",
         "type": "bytes",
         "id": 1
-      },
-      "poststatehash": {
-        "type": "bytes",
-        "id": 2
-      },
-      "deployshash": {
-        "type": "bytes",
-        "id": 3
       },
       "timestamp": {
         "type": "int64",
@@ -356,26 +324,19 @@
         "type": "int64",
         "id": 6
       },
-      "deploycount": {
-        "type": "int32",
-        "id": 7
-      },
       "extrabytes": {
         "type": "bytes",
-        "id": 8
+        "id": 7
       }
     },
     "nullables": []
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "DeployData",
+    "name": "DeployDataProto",
     "fields": {
       "deployer": {
         "type": "bytes",
@@ -414,16 +375,13 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "ProcessedDeploy",
+    "name": "ProcessedDeployProto",
     "fields": {
       "deploy": {
-        "type": "DeployData",
+        "type": "DeployDataProto",
         "id": 1
       },
       "cost": {
@@ -432,42 +390,86 @@
       },
       "deploylogList": {
         "rule": "repeated",
-        "type": "Event",
+        "type": "EventProto",
         "id": 3
-      },
-      "paymentlogList": {
-        "rule": "repeated",
-        "type": "Event",
-        "id": 4
       },
       "errored": {
         "type": "bool",
         "id": 5
+      },
+      "systemdeployerror": {
+        "type": "string",
+        "id": 6
       }
     },
     "nullables": []
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "Body",
+    "name": "SlashSystemDeployDataProto",
     "fields": {
-      "state": {
-        "type": "RChainState",
+      "invalidblockhash": {
+        "type": "bytes",
         "id": 1
       },
-      "deploysList": {
+      "issuerpublickey": {
+        "type": "bytes",
+        "id": 2
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "CloseBlockSystemDeployDataProto",
+    "fields": {},
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "SystemDeployDataProto",
+    "fields": {
+      "slashsystemdeploy": {
+        "type": "SlashSystemDeployDataProto",
+        "id": 1
+      },
+      "closeblocksystemdeploy": {
+        "type": "CloseBlockSystemDeployDataProto",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "slashsystemdeploy",
+      "closeblocksystemdeploy"
+    ]
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "ProcessedSystemDeployProto",
+    "fields": {
+      "systemdeploy": {
+        "type": "SystemDeployDataProto",
+        "id": 1
+      },
+      "deploylogList": {
         "rule": "repeated",
-        "type": "ProcessedDeploy",
+        "type": "EventProto",
         "id": 2
       },
-      "extrabytes": {
-        "type": "bytes",
+      "errormsg": {
+        "type": "string",
         "id": 3
       }
     },
@@ -475,13 +477,38 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "Justification",
+    "name": "BodyProto",
+    "fields": {
+      "state": {
+        "type": "RChainStateProto",
+        "id": 1
+      },
+      "deploysList": {
+        "rule": "repeated",
+        "type": "ProcessedDeployProto",
+        "id": 2
+      },
+      "systemdeploysList": {
+        "rule": "repeated",
+        "type": "ProcessedSystemDeployProto",
+        "id": 3
+      },
+      "extrabytes": {
+        "type": "bytes",
+        "id": 4
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "JustificationProto",
     "fields": {
       "validator": {
         "type": "bytes",
@@ -496,13 +523,10 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "RChainState",
+    "name": "RChainStateProto",
     "fields": {
       "prestatehash": {
         "type": "bytes",
@@ -514,7 +538,7 @@
       },
       "bondsList": {
         "rule": "repeated",
-        "type": "Bond",
+        "type": "BondProto",
         "id": 3
       },
       "blocknumber": {
@@ -526,24 +550,21 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "Event",
+    "name": "EventProto",
     "fields": {
       "produce": {
-        "type": "ProduceEvent",
+        "type": "ProduceEventProto",
         "id": 1
       },
       "consume": {
-        "type": "ConsumeEvent",
+        "type": "ConsumeEventProto",
         "id": 2
       },
       "comm": {
-        "type": "CommEvent",
+        "type": "CommEventProto",
         "id": 3
       }
     },
@@ -555,13 +576,10 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "ProduceEvent",
+    "name": "ProduceEventProto",
     "fields": {
       "channelshash": {
         "type": "bytes",
@@ -575,7 +593,7 @@
         "type": "bool",
         "id": 3
       },
-      "sequencenumber": {
+      "timesrepeated": {
         "type": "int32",
         "id": 4
       }
@@ -584,13 +602,10 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "ConsumeEvent",
+    "name": "ConsumeEventProto",
     "fields": {
       "channelshashesList": {
         "rule": "repeated",
@@ -604,45 +619,54 @@
       "persistent": {
         "type": "bool",
         "id": 3
-      },
-      "sequencenumber": {
-        "type": "int32",
-        "id": 4
       }
     },
     "nullables": []
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "CommEvent",
+    "name": "CommEventProto",
     "fields": {
       "consume": {
-        "type": "ConsumeEvent",
+        "type": "ConsumeEventProto",
         "id": 1
       },
       "producesList": {
         "rule": "repeated",
-        "type": "ProduceEvent",
+        "type": "ProduceEventProto",
         "id": 2
+      },
+      "peeksList": {
+        "rule": "repeated",
+        "type": "PeekProto",
+        "id": 3
       }
     },
     "nullables": []
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "Bond",
+    "name": "PeekProto",
+    "fields": {
+      "channelindex": {
+        "type": "int32",
+        "id": 1
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "BondProto",
     "fields": {
       "validator": {
         "type": "bytes",
@@ -657,73 +681,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "service",
-    "name": "DeployService",
-    "methods": {
-      "DoDeploy": {
-        "requestType": "DeployData",
-        "responseType": "Either"
-      },
-      "getBlock": {
-        "requestType": "BlockQuery",
-        "responseType": "Either"
-      },
-      "visualizeDag": {
-        "requestType": "VisualizeDagQuery",
-        "responseType": "Either",
-        "responseStream": true
-      },
-      "machineVerifiableDag": {
-        "requestType": "MachineVerifyQuery",
-        "responseType": "Either"
-      },
-      "showMainChain": {
-        "requestType": "BlocksQuery",
-        "responseType": "Either",
-        "responseStream": true
-      },
-      "getBlocks": {
-        "requestType": "BlocksQuery",
-        "responseType": "Either",
-        "responseStream": true
-      },
-      "listenForDataAtName": {
-        "requestType": "DataAtNameQuery",
-        "responseType": "Either"
-      },
-      "listenForContinuationAtName": {
-        "requestType": "ContinuationAtNameQuery",
-        "responseType": "Either"
-      },
-      "findBlockWithDeploy": {
-        "requestType": "FindDeployInBlockQuery",
-        "responseType": "Either"
-      },
-      "findDeploy": {
-        "requestType": "FindDeployQuery",
-        "responseType": "Either"
-      },
-      "previewPrivateNames": {
-        "requestType": "PrivateNamePreviewQuery",
-        "responseType": "Either"
-      },
-      "lastFinalizedBlock": {
-        "requestType": "LastFinalizedBlockQuery",
-        "responseType": "Either"
-      }
-    }
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "FindDeployQuery",
@@ -737,31 +695,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "FindDeployInBlockQuery",
-    "fields": {
-      "user": {
-        "type": "bytes",
-        "id": 1
-      },
-      "timestamp": {
-        "type": "int64",
-        "id": 2
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "BlockQuery",
@@ -775,10 +709,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "BlocksQuery",
@@ -792,10 +723,25 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
+    ],
+    "type": "type",
+    "name": "BlocksQueryByHeight",
+    "fields": {
+      "startblocknumber": {
+        "type": "int64",
+        "id": 1
+      },
+      "endblocknumber": {
+        "type": "int64",
+        "id": 2
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
     ],
     "type": "type",
     "name": "DataAtNameQuery",
@@ -813,10 +759,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "ContinuationAtNameQuery",
@@ -835,61 +778,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "DeployServiceResponse",
-    "fields": {
-      "message": {
-        "type": "string",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "BlockQueryResponse",
-    "fields": {
-      "blockinfo": {
-        "type": "BlockInfo",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "LightBlockQueryResponse",
-    "fields": {
-      "blockinfo": {
-        "type": "LightBlockInfo",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "VisualizeDagQuery",
@@ -907,27 +796,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "VisualizeBlocksResponse",
-    "fields": {
-      "content": {
-        "type": "string",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "MachineVerifyQuery",
@@ -936,71 +805,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "MachineVerifyResponse",
-    "fields": {
-      "content": {
-        "type": "string",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "ListeningNameDataResponse",
-    "fields": {
-      "blockresultsList": {
-        "rule": "repeated",
-        "type": "DataWithBlockInfo",
-        "id": 1
-      },
-      "length": {
-        "type": "int32",
-        "id": 2
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "ListeningNameContinuationResponse",
-    "fields": {
-      "blockresultsList": {
-        "rule": "repeated",
-        "type": "ContinuationsWithBlockInfo",
-        "id": 1
-      },
-      "length": {
-        "type": "int32",
-        "id": 2
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "PrivateNamePreviewQuery",
@@ -1022,28 +827,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
-    ],
-    "type": "type",
-    "name": "PrivateNamePreviewResponse",
-    "fields": {
-      "idsList": {
-        "rule": "repeated",
-        "type": "bytes",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "LastFinalizedBlockQuery",
@@ -1052,16 +836,13 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
-    "name": "LastFinalizedBlockResponse",
+    "name": "IsFinalizedQuery",
     "fields": {
-      "blockinfo": {
-        "type": "BlockInfo",
+      "hash": {
+        "type": "string",
         "id": 1
       }
     },
@@ -1069,10 +850,107 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
+    ],
+    "type": "type",
+    "name": "BondStatusQuery",
+    "fields": {
+      "publickey": {
+        "type": "bytes",
+        "id": 1
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "ExploratoryDeployQuery",
+    "fields": {
+      "term": {
+        "type": "string",
+        "id": 1
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "BondInfo",
+    "fields": {
+      "validator": {
+        "type": "string",
+        "id": 1
+      },
+      "stake": {
+        "type": "int64",
+        "id": 2
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "DeployInfo",
+    "fields": {
+      "deployer": {
+        "type": "string",
+        "id": 1
+      },
+      "term": {
+        "type": "string",
+        "id": 2
+      },
+      "timestamp": {
+        "type": "int64",
+        "id": 3
+      },
+      "sig": {
+        "type": "string",
+        "id": 4
+      },
+      "sigalgorithm": {
+        "type": "string",
+        "id": 5
+      },
+      "phloprice": {
+        "type": "int64",
+        "id": 7
+      },
+      "phlolimit": {
+        "type": "int64",
+        "id": 8
+      },
+      "validafterblocknumber": {
+        "type": "int64",
+        "id": 9
+      },
+      "cost": {
+        "type": "uint64",
+        "id": 10
+      },
+      "errored": {
+        "type": "bool",
+        "id": 11
+      },
+      "systemdeployerror": {
+        "type": "string",
+        "id": 12
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper"
     ],
     "type": "type",
     "name": "LightBlockInfo",
@@ -1081,128 +959,105 @@
         "type": "string",
         "id": 1
       },
-      "blocksize": {
+      "sender": {
         "type": "string",
         "id": 2
       },
-      "blocknumber": {
+      "seqnum": {
         "type": "int64",
         "id": 3
       },
-      "version": {
-        "type": "int64",
+      "sig": {
+        "type": "string",
         "id": 4
       },
-      "deploycount": {
-        "type": "int32",
+      "sigalgorithm": {
+        "type": "string",
         "id": 5
       },
-      "tuplespacehash": {
+      "shardid": {
         "type": "string",
         "id": 6
       },
-      "timestamp": {
-        "type": "int64",
+      "extrabytes": {
+        "type": "bytes",
         "id": 7
       },
-      "faulttolerance": {
-        "type": "float",
+      "version": {
+        "type": "int64",
         "id": 8
       },
-      "mainparenthash": {
-        "type": "string",
+      "timestamp": {
+        "type": "int64",
         "id": 9
+      },
+      "headerextrabytes": {
+        "type": "bytes",
+        "id": 10
       },
       "parentshashlistList": {
         "rule": "repeated",
         "type": "string",
-        "id": 10
-      },
-      "sender": {
-        "type": "string",
         "id": 11
+      },
+      "blocknumber": {
+        "type": "int64",
+        "id": 12
+      },
+      "prestatehash": {
+        "type": "string",
+        "id": 13
+      },
+      "poststatehash": {
+        "type": "string",
+        "id": 14
+      },
+      "bodyextrabytes": {
+        "type": "bytes",
+        "id": 15
+      },
+      "bondsList": {
+        "rule": "repeated",
+        "type": "BondInfo",
+        "id": 16
+      },
+      "blocksize": {
+        "type": "string",
+        "id": 17
+      },
+      "deploycount": {
+        "type": "int32",
+        "id": 18
+      },
+      "faulttolerance": {
+        "type": "float",
+        "id": 19
       }
     },
     "nullables": []
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "BlockInfo",
     "fields": {
-      "blockhash": {
-        "type": "string",
+      "blockinfo": {
+        "type": "LightBlockInfo",
         "id": 1
       },
-      "blocksize": {
-        "type": "string",
+      "deploysList": {
+        "rule": "repeated",
+        "type": "DeployInfo",
         "id": 2
-      },
-      "blocknumber": {
-        "type": "int64",
-        "id": 3
-      },
-      "version": {
-        "type": "int64",
-        "id": 4
-      },
-      "deploycount": {
-        "type": "int32",
-        "id": 5
-      },
-      "tuplespacehash": {
-        "type": "string",
-        "id": 6
-      },
-      "timestamp": {
-        "type": "int64",
-        "id": 7
-      },
-      "faulttolerance": {
-        "type": "float",
-        "id": 8
-      },
-      "mainparenthash": {
-        "type": "string",
-        "id": 9
-      },
-      "parentshashlistList": {
-        "rule": "repeated",
-        "type": "string",
-        "id": 10
-      },
-      "sender": {
-        "type": "string",
-        "id": 11
-      },
-      "shardid": {
-        "type": "string",
-        "id": 12
-      },
-      "bondsvalidatorlistList": {
-        "rule": "repeated",
-        "type": "string",
-        "id": 13
-      },
-      "deploycostList": {
-        "rule": "repeated",
-        "type": "string",
-        "id": 14
       }
     },
     "nullables": []
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "DataWithBlockInfo",
@@ -1221,10 +1076,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "ContinuationsWithBlockInfo",
@@ -1243,10 +1095,7 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "casper",
-      "protocol"
+      "casper"
     ],
     "type": "type",
     "name": "WaitingContinuationInfo",
@@ -1265,90 +1114,247 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
       "casper",
-      "protocol"
+      "v1"
     ],
     "type": "service",
-    "name": "ProposeService",
+    "name": "DeployService",
     "methods": {
-      "propose": {
-        "requestType": "PrintUnmatchedSendsQuery",
-        "responseType": "Either"
+      "doDeploy": {
+        "requestType": "DeployDataProto",
+        "responseType": "DeployResponse"
+      },
+      "getBlock": {
+        "requestType": "BlockQuery",
+        "responseType": "BlockResponse"
+      },
+      "visualizeDag": {
+        "requestType": "VisualizeDagQuery",
+        "responseType": "VisualizeBlocksResponse",
+        "responseStream": true
+      },
+      "machineVerifiableDag": {
+        "requestType": "MachineVerifyQuery",
+        "responseType": "MachineVerifyResponse"
+      },
+      "showMainChain": {
+        "requestType": "BlocksQuery",
+        "responseType": "BlockInfoResponse",
+        "responseStream": true
+      },
+      "getBlocks": {
+        "requestType": "BlocksQuery",
+        "responseType": "BlockInfoResponse",
+        "responseStream": true
+      },
+      "listenForDataAtName": {
+        "requestType": "DataAtNameQuery",
+        "responseType": "ListeningNameDataResponse"
+      },
+      "listenForContinuationAtName": {
+        "requestType": "ContinuationAtNameQuery",
+        "responseType": "ContinuationAtNameResponse"
+      },
+      "findDeploy": {
+        "requestType": "FindDeployQuery",
+        "responseType": "FindDeployResponse"
+      },
+      "previewPrivateNames": {
+        "requestType": "PrivateNamePreviewQuery",
+        "responseType": "PrivateNamePreviewResponse"
+      },
+      "lastFinalizedBlock": {
+        "requestType": "LastFinalizedBlockQuery",
+        "responseType": "LastFinalizedBlockResponse"
+      },
+      "isFinalized": {
+        "requestType": "IsFinalizedQuery",
+        "responseType": "IsFinalizedResponse"
+      },
+      "bondStatus": {
+        "requestType": "BondStatusQuery",
+        "responseType": "BondStatusResponse"
+      },
+      "exploratoryDeploy": {
+        "requestType": "ExploratoryDeployQuery",
+        "responseType": "ExploratoryDeployResponse"
+      },
+      "getBlocksByHeights": {
+        "requestType": "BlocksQueryByHeight",
+        "responseType": "BlockInfoResponse",
+        "responseStream": true
       }
     }
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
       "casper",
-      "protocol"
+      "v1"
     ],
     "type": "type",
-    "name": "PrintUnmatchedSendsQuery",
+    "name": "ExploratoryDeployResponse",
     "fields": {
-      "printunmatchedsends": {
-        "type": "bool",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "node",
-      "model"
-    ],
-    "type": "service",
-    "name": "Repl",
-    "methods": {
-      "Run": {
-        "requestType": "CmdRequest",
-        "responseType": "ReplResponse"
-      },
-      "Eval": {
-        "requestType": "EvalRequest",
-        "responseType": "ReplResponse"
-      }
-    }
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "node",
-      "model"
-    ],
-    "type": "type",
-    "name": "CmdRequest",
-    "fields": {
-      "line": {
-        "type": "string",
-        "id": 1
-      }
-    },
-    "nullables": []
-  },
-  {
-    "namespace": [
-      "coop",
-      "rchain",
-      "node",
-      "model"
-    ],
-    "type": "type",
-    "name": "EvalRequest",
-    "fields": {
-      "program": {
-        "type": "string",
+      "error": {
+        "type": "ServiceError",
         "id": 1
       },
-      "printunmatchedsendsonly": {
-        "type": "bool",
+      "result": {
+        "type": "DataWithBlockInfo",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "result"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "DeployResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "result": {
+        "type": "string",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "result"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "BlockResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "blockinfo": {
+        "type": "BlockInfo",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "blockinfo"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "VisualizeBlocksResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "content": {
+        "type": "string",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "content"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "MachineVerifyResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "content": {
+        "type": "string",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "content"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "BlockInfoResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "blockinfo": {
+        "type": "LightBlockInfo",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "blockinfo"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "ListeningNameDataResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "payload": {
+        "type": "ListeningNameDataPayload",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "payload"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "ListeningNameDataPayload",
+    "fields": {
+      "blockinfoList": {
+        "rule": "repeated",
+        "type": "DataWithBlockInfo",
+        "id": 1
+      },
+      "length": {
+        "type": "int32",
         "id": 2
       }
     },
@@ -1356,16 +1362,217 @@
   },
   {
     "namespace": [
-      "coop",
-      "rchain",
-      "node",
-      "model"
+      "casper",
+      "v1"
     ],
     "type": "type",
-    "name": "ReplResponse",
+    "name": "ContinuationAtNameResponse",
     "fields": {
-      "output": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "payload": {
+        "type": "ContinuationAtNamePayload",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "payload"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "ContinuationAtNamePayload",
+    "fields": {
+      "blockresultsList": {
+        "rule": "repeated",
+        "type": "ContinuationsWithBlockInfo",
+        "id": 1
+      },
+      "length": {
+        "type": "int32",
+        "id": 2
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "FindDeployResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "blockinfo": {
+        "type": "LightBlockInfo",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "blockinfo"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "PrivateNamePreviewResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "payload": {
+        "type": "PrivateNamePreviewPayload",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "payload"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "PrivateNamePreviewPayload",
+    "fields": {
+      "idsList": {
+        "rule": "repeated",
+        "type": "bytes",
+        "id": 1
+      }
+    },
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "LastFinalizedBlockResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "blockinfo": {
+        "type": "BlockInfo",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "blockinfo"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "IsFinalizedResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "isfinalized": {
+        "type": "bool",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "isfinalized"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "BondStatusResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "isbonded": {
+        "type": "bool",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "isbonded"
+    ]
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "service",
+    "name": "ProposeService",
+    "methods": {
+      "propose": {
+        "requestType": "PrintUnmatchedSendsQuery",
+        "responseType": "ProposeResponse"
+      }
+    }
+  },
+  {
+    "namespace": [
+      "casper",
+      "v1"
+    ],
+    "type": "type",
+    "name": "ProposeResponse",
+    "fields": {
+      "error": {
+        "type": "ServiceError",
+        "id": 1
+      },
+      "result": {
         "type": "string",
+        "id": 2
+      }
+    },
+    "nullables": [
+      "error",
+      "result"
+    ]
+  },
+  {
+    "namespace": [
+      "casper"
+    ],
+    "type": "type",
+    "name": "PrintUnmatchedSendsQuery",
+    "fields": {
+      "printunmatchedsends": {
+        "type": "bool",
         "id": 1
       }
     },
@@ -1711,17 +1918,14 @@
         "type": "string",
         "id": 3
       },
-      "deployid": {
-        "type": "DeployId",
+      "injections": {
+        "keyType": "string",
+        "type": "Par",
         "id": 4
-      },
-      "deployerid": {
-        "type": "DeployerId",
-        "id": 5
       },
       "locallyfree": {
         "type": "bytes",
-        "id": 6,
+        "id": 5,
         "options": {
           "(scalapb.field).type": "coop.rchain.models.AlwaysEqual[scala.collection.immutable.BitSet]"
         }
@@ -2658,12 +2862,17 @@
       "gDeployerIdBody": {
         "type": "GDeployerId",
         "id": 3
+      },
+      "gSysAuthTokenBody": {
+        "type": "GSysAuthToken",
+        "id": 4
       }
     },
     "nullables": [
       "gPrivateBody",
       "gDeployIdBody",
-      "gDeployerIdBody"
+      "gDeployerIdBody",
+      "gSysAuthTokenBody"
     ]
   },
   {
@@ -2705,23 +2914,14 @@
   {
     "namespace": [],
     "type": "type",
-    "name": "EitherAny",
-    "fields": {
-      "typeUrl": {
-        "type": "string",
-        "id": 1
-      },
-      "value": {
-        "type": "bytes",
-        "id": 2
-      }
-    },
+    "name": "GSysAuthToken",
+    "fields": {},
     "nullables": []
   },
   {
     "namespace": [],
     "type": "type",
-    "name": "EitherError",
+    "name": "ServiceError",
     "fields": {
       "messagesList": {
         "rule": "repeated",
@@ -2732,34 +2932,66 @@
     "nullables": []
   },
   {
-    "namespace": [],
+    "namespace": [
+      "repl"
+    ],
+    "type": "service",
+    "name": "Repl",
+    "methods": {
+      "Run": {
+        "requestType": "CmdRequest",
+        "responseType": "ReplResponse"
+      },
+      "Eval": {
+        "requestType": "EvalRequest",
+        "responseType": "ReplResponse"
+      }
+    }
+  },
+  {
+    "namespace": [
+      "repl"
+    ],
     "type": "type",
-    "name": "EitherSuccess",
+    "name": "CmdRequest",
     "fields": {
-      "response": {
-        "type": "EitherAny",
+      "line": {
+        "type": "string",
         "id": 1
       }
     },
     "nullables": []
   },
   {
-    "namespace": [],
+    "namespace": [
+      "repl"
+    ],
     "type": "type",
-    "name": "Either",
+    "name": "EvalRequest",
     "fields": {
-      "error": {
-        "type": "EitherError",
+      "program": {
+        "type": "string",
         "id": 1
       },
-      "success": {
-        "type": "EitherSuccess",
+      "printunmatchedsendsonly": {
+        "type": "bool",
         "id": 2
       }
     },
-    "nullables": [
-      "error",
-      "success"
-    ]
+    "nullables": []
+  },
+  {
+    "namespace": [
+      "repl"
+    ],
+    "type": "type",
+    "name": "ReplResponse",
+    "fields": {
+      "output": {
+        "type": "string",
+        "id": 1
+      }
+    },
+    "nullables": []
   }
 ]
