@@ -24,7 +24,7 @@ export async function run(require, process) {
   const grpcLib = require('@grpc/grpc-js');
   const protoSchema = require('./rnode-grpc-gen/js/pbjs_generated.json');
   const { rnodeDeploy } = rnode_grpc_js;
-  require('./rnode-grpc-gen/js/DeployService_pb.js');  // get proto in scope
+  require('./rnode-grpc-gen/js/DeployServiceV1_pb.js');  // get proto in scope
   const deployService = rnodeDeploy({ grpcLib, host: rnodeExternalUrl, protoSchema });
   ensureDeploy(secKey, { deployService });
 }
@@ -62,8 +62,7 @@ async function ensureDeploy(secretKey, { deployService }) {
   const signed = signDeploy(deployKey, deployData);
   console.log({ signedDeploy: signed });
   console.log({ deployService });
-  console.log({ DoDeploy: deployService.DoDeploy });
-  const result = await deployService.DoDeploy(signed);
+  const result = await deployService.doDeploy(signed);
   console.log({ deployResponse: result });
 }
 

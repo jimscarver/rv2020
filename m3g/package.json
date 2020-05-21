@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "rnode-generate": "rnode-grpc --rnode-version v0.9.23",
     "init": "echo generate key for deployment by this service; node run.cjs ./init.js",
     "create-election": "echo create election: deploy ballot to chain; exit 1",
     "grant": "echo grant one member a right to cast a ballot; exit 1",
