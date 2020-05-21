@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# Emacs backups
+*~
+
 o2r/capper.config
 o2r/capper.db
 o2r/.envrc
