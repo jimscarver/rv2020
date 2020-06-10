@@ -1,0 +1,28 @@
+new
+  deployId(`rho:rchain:deployId`),
+deployer(`rho:rchain:deployerId`),
+ack
+in {
+  @[*deployer, "locker1", "put"]!(123, *ack) |
+  for (_ <- ack) {
+    new increment in {
+      for (@x, return <- increment) {
+        match x + 1 {
+          x1 => return!(x1, x1)
+        }
+      }
+      |
+      @[*deployer, "locker1", "modify"]!(*increment, *ack)
+      |
+      for (_ <- ack) {
+        new plus1 in {
+          for (@x, return <- plus1) {
+            return!(x + 1)
+          }
+          |
+          @[*deployer, "locker1", "gets"]!(*plus1, *deployId)
+        }
+      }
+    }
+  }
+}

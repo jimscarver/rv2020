@@ -1,0 +1,38 @@
+new
+  deployId(`rho:rchain:deployId`),
+deployer(`rho:rchain:deployerId`),
+contentsCh
+in {
+  match "locker1" {
+    lockerName => {
+      deployId!(lockerName) |
+      contentsCh!(Nil) |
+      contract @[*deployer, lockerName, "gets"](f, return) = {
+        for (@contents <<- contentsCh) {
+          f!(contents, *return)
+        }
+      }
+      |
+      contract @[*deployer, lockerName, "put"](@contents, return) = {
+        for (_ <- contentsCh) {
+          contentsCh!(contents)
+          |
+          return!(Nil)
+        }
+      }
+      |
+      contract @[*deployer, lockerName, "modify"](f, return) = {
+        for (@contents <- contentsCh) {
+          new resultCh in {
+            f!(contents, *resultCh) | for (@replacement, @result <- resultCh) {
+              contentsCh!(replacement)
+              |
+              return!(result)
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
