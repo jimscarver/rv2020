@@ -1,0 +1,84 @@
+new
+ deployId, //(`rho:rchain:deployId`),
+ deployerId, //(`rho:rchain:deployerId`),
+ Inbox,
+ insertArbitrary(`rho:registry:insertArbitrary`),
+ trace(`rho:io:stderr`)
+in {
+    contract Inbox(return) = {
+        new self, queueCh, senderFacet in {
+            queueCh!([]) |
+            /**
+             * Deliver a message
+             * IDEA: replyTo, allegedSenderName
+             * ISSUE: denial of service / spam. Charge postage? Use reputation?
+             */
+            contract senderFacet(@"deliver", @message, return) = {
+                trace!({"deliver message": message}) |
+                for (@queue <- queueCh) {
+                    trace!({"queue length was": queue.size()}) |
+                    queueCh!(queue ++ [message]) |
+                    return!(Nil)
+                }
+            }
+            |
+            /**
+             * Pop one item from the queue
+             * Return [item] if there is such an item, else [].
+             */
+            contract self(@"pop", return) = {
+                trace!("pop") |
+                for (@queue <- queueCh) {
+                    trace!({"queue length was": queue.length()}) |
+                    queueCh!(queue.slice(1, queue.length())) |
+                    return!(queue.slice(0, 1))
+                }
+            }
+            |
+            /**
+             * Get full access to the queue
+             * WARNING: caller may invalidate invariants
+             */
+            contract self(@"getQueue", return) = {
+                trace!("getQueue") |
+                return!(*queueCh)
+            }
+            |
+            new uriCh in {
+                insertArbitrary!(*senderFacet, *uriCh) |
+                for (@uri <- uriCh) {
+                    trace!({"senderFacetURI": uri}) |
+                    return!({
+                        "inbox": *self,
+                        "senderFacet": *senderFacet,
+                        "senderFacetURI": uri
+                    })
+                }
+            }
+        }
+    }
+    |
+    // testing...
+    new ch in {
+        Inbox!(*ch) | for (@{"inbox": *inbox, "senderFacetURI": uri, "senderFacet": *senderFacet } <- ch) {
+            trace!({"test got inbox": *inbox, "senderFacetURI": uri}) |
+            senderFacet!("deliver", "Ping", *ch) |
+            for(_ <- ch) {
+                inbox!("pop", *ch) |
+                for(@maybeItem <- ch) {
+                    trace!({"pop 1 got maybeItem": maybeItem})
+                }
+                |
+                inbox!("pop", *ch) |
+                for(@maybeItem <- ch) {
+                    trace!({"pop 2 got maybeItem": maybeItem})
+                }
+                |
+                inbox!("pop", *ch) |
+                for(@maybeItem <- ch) {
+                    trace!({"pop 3 got maybeItem": maybeItem})
+                }
+            }
+        }
+    }
+}
