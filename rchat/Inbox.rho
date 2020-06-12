@@ -1,10 +1,17 @@
 new
  deployId, //(`rho:rchain:deployId`),
- deployerId, //(`rho:rchain:deployerId`),
  Inbox,
  insertArbitrary(`rho:registry:insertArbitrary`),
  trace(`rho:io:stderr`)
 in {
+    new uriCh in {
+        insertArbitrary!(*Inbox, *uriCh) |
+        for (@uri <- uriCh) {
+            trace!({"Inbox URI": uri, "Inbox": *Inbox}) |
+            deployId!(uri)
+        }
+    }
+    |
     contract Inbox(return) = {
         new self, queueCh, senderFacet in {
             queueCh!([]) |
@@ -23,7 +30,7 @@ in {
             }
             |
             /**
-             * Pop one item from the queue
+             * Pop first item from the queue
              * Return [item] if there is such an item, else [].
              */
             contract self(@"pop", return) = {

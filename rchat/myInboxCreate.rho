@@ -1,0 +1,29 @@
+new deployId, //(`rho:rchain:deployId`),
+deployerId, //(`rho:rchain:deployerId`),
+lookup(`rho:registry:lookup`),
+InboxCh,
+trace(`rho:io:stderr`)
+in {
+    // see Inbox.rho. ISSUE: how to keep this in sync with URI from deploy?
+    lookup!(`rho:id:7fuo1mqp4ooaxy6nthfou7fzkb6dijqudpfot1kedxeounq9zuikc3`, *InboxCh) |
+    
+    for(Inbox <- InboxCh) {
+        trace!({"Inbox": *Inbox}) |
+        match "myInbox" {
+            inboxName => {
+                // deployerId is unforgeable; no other deployer can refer to it.
+                // Likewise compound names formed from it, such as inboxCh 
+                match [*deployerId, inboxName] {
+                    {*inboxCh} => {
+                        // put inbox details where only we can find it.
+                        Inbox!(*inboxCh) |
+                        for (@inboxInfo <- inboxCh) {
+                            trace!(inboxInfo) |
+                            deployId!(inboxInfo.get("senderFacetURI"))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

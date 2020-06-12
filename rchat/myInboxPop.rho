@@ -1,0 +1,25 @@
+new deployId, //(`rho:rchain:deployId`),
+deployerId, //(`rho:rchain:deployerId`),
+trace(`rho:io:stderr`)
+in {
+    match "myInbox" {
+        inboxName => {
+            // deployerId is unforgeable; no other deployer can refer to it.
+            // Likewise compound names formed from it, such as inboxCh 
+            match [*deployerId, inboxName] {
+                {*inboxCh} => {
+                    // get inbox details from where only we can find it.
+                    for (@{ "inbox": *inbox, ... _ } <<- inboxCh) {
+                        new ch in {
+                            inbox!("pop", *ch) |
+                            for (@maybeMessage <- ch) {
+                                trace!(maybeMessage) |
+                                deployId!(maybeMessage)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
