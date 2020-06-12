@@ -1,0 +1,44 @@
+<!--
+    swtGrid`$chatWin:
+            $setNameField.X    $setNameButton $offerChatButton $findFriendButton
+            $chatTextArea.Y    >              >                >
+            $nextMessageBox    >              >                >
+            $sendMessageButton >              >                >`
+-->
+<style>
+  #eChat form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(20px, auto);
+    }
+    #setNameField { grid-column: 1; grid-row: 1; }
+    #setNameButton { grid-column: 2; grid-row: 1; }
+    #offerChatButton { grid-column: 3; grid-row: 1; }
+    #findFriendButton { grid-column: 4; grid-row: 1; }
+    #chatTextArea { grid-column: 1 / 5; grid-row: 2; }
+    #nextMessageBox { grid-column: 1 / 5; grid-row: 3; }
+    #sendMessageButton { grid-column: 1; grid-row: 4; }
+</style>
+
+<div class="JFrame" id="eChat">
+  <h2>eChat</h2>
+
+  <form>
+    <label>Type Name and Set <input id="setNameField" /></label>
+    <button id="setNameButton">Set Your Name</button>
+    <button id="offerChatButton">Offer Chat</button>
+    <button id="findFriendButton">Find Friend</button>
+
+      <!-- (SWT.getMULTI() | SWT.getWRAP()) | (SWT.getBORDER() | SWT.getV_SCROLL())) -->
+      <textarea id="chatTextArea">
+    </textarea>
+    <input id="nextMessageBox" /> <!-- := <widget:makeText>(chatWin, SWT.getSINGLE() | SWT.getBORDER()) -->
+    <button id="sendMessageButton">Send Message</button>
+  </form>
+
+  <script src="eChat.js"></script>
+  <script>
+    makeChatController({ getElementById: id => document.getElementById(id) })
+  </script>
+</div>

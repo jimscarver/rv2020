@@ -1,80 +1,121 @@
-#!/usr/bin/env rune
+// transcribed from
+// http://erights.org/elang/echat/index.html
+// https://github.com/kpreid/e-on-java/blob/master/src/esrc/scripts/eChat.e-swt
+// Copyright 2002 Combex, Inc. under the terms of the MIT X license
+// found at http://www.opensource.org/licenses/mit-license.html ................
 
-pragma.syntax("0.8")
 
-# Copyright 2002 Combex, Inc. under the terms of the MIT X license
-# found at http://www.opensource.org/licenses/mit-license.html ................
+const harden = x => Object.freeze(x)  // TODO: use @agoric/harden to deep-freeze
+// TODO: move to E module
+const E = harden({
+    call(target, method, args) {
+        return target[method].apply(target, args)
+    }
+})
+// set up tracing; sbut out all the printing for deployment
+// TODO: rest of eChat.e-swt
+function traceline(txt) {
+    console.log(txt);
+}
+//??? def stackTrace := <import:com.skyhunter.e.util.stackTraceFunc>
 
-# set up tracing; sbut out all the printing for deployment
-def traceline(text) :void {println(text)}
-def stackTrace := <import:com.skyhunter.e.util.stackTraceFunc>
-
-# set up user SWT user interface imports
-def SWT := <swt:makeSWT>
-def <widget> := <swt:widgets.*>
+// set up user SWT user interface imports
+// def swing := <import:com.sun.java.swing.*>
+// https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html
+// def awt := <import:java.awt.*>
+// ??? def SWT := <swt:makeSWT>
+/// def <widget> := <swt:widgets.*>
 
 traceline("made imports")
 
-# Next, we put the introducer on the air so our connection
-# operations can come to life, and create a couple of utility
-# routines that convert URIs to and from live references.
 
-introducer.onTheAir()
+// Next, we put the introducer on the air so our connection
+// operations can come to life, and create a couple of utility
+// routines that convert URIs to and from live references.
 
-# return the object represented by the URI
-def getObjectFromURI(uri) :any {
-    introducer.sturdyFromURI(uri).getRcvr()
+console.log("TODO: introducer.onTheAir()");
+
+// TODO: import this from an RChain registry, capTP module?
+const introducer = harden({
+    sturdyFromURI(uri) {
+        return harden({
+            getRcvr() {
+                console.log("TODO: introducer.sturdyFromURI(uri).getRcvr() - use RChain registry, capTP?")
+                return "@@@TODO"
+            },
+        })
+    },
+    sturdyToURI(sr) {
+        return `@@TODO: uri of $sr`
+    },
+});
+const identityMgr = harden({
+    makeKnown(obj) {
+        return ["@@sturdyref", null, null]
+    }
+})
+
+/** return the object represented by the URI
+ * @return any
+ */
+function getObjectFromURI(uri)  {
+    return introducer.sturdyFromURI(uri).getRcvr()
 }
 
-def makeURIFromObject(obj) :String {
-    # This implementation assumes a non-persistent single incarnation
-    def [sr, _, _] := identityMgr.makeKnown(obj)
-    introducer.sturdyToURI(sr)
+/**
+ *
+ * @param {*} obj
+ * @return string
+ */
+function makeURIFromObject(obj) {
+    // This implementation assumes a non-persistent single incarnation
+    def [sr, _, _] = identityMgr.makeKnown(obj)
+    return introducer.sturdyToURI(sr)
 }
 
 traceline("made basic introducers")
 
-# return the friend file
-def findFriendFile(chatWin) :near {
-    def dialog := <widget:makeFileDialog>(chatWin, SWT.getOPEN())
+/** return the friend file
+ * @return :near
+ */
+function findFriendFile(chatWin) {
+    const dialog = widget.makeFileDialog(chatWin, SWT.getOPEN())
     dialog.setText("Pick the File containing a Chat Reference for a Friend")
-    def optPath := dialog.open()
+    const optPath = dialog.open()
     if (optPath == null) {
-        null
+        return null
     } else {
-        def result := <file>[optPath]
+        const result = file[optPath] //@@TODO
         traceline("friend reference path: " + result)
-        result
+        return result
     }
 }
 
-# return a file to be saved
-def requestSaveFile(chatWin) :near {
-    def dialog := <widget:makeFileDialog>(chatWin, SWT.getSAVE())
+/** return a file to be saved
+ * @return :near
+ */
+function requestSaveFile(chatWin) {
+    const dialog = widget.makeFileDialog(chatWin, SWT.getSAVE())
     dialog.setText("Save Chat Reference File with Your Name")
-    def optPath := dialog.open()
+    const optPath = dialog.open()
     if (optPath == null) {
-        null
+        return null
     } else {
-        def result := <file>[optPath]
+        const result = file[optPath]
         traceline("address path: " + result)
-        result
+        return result
     }
 }
 
-# method that writes out the URI for your echat system's communication
-# interface
-def offerMyAddress(file, uri) :void {
+/**
+ *  method that writes out the URI for your echat system's communication
+ *  interface
+ * @return void
+ */
+function offerMyAddress(file, uri) {
     file.setText(uri)
 }
 
-
-# make button utilities for creating the chat window
-def makeButton(parent, text) :near {
-    def button := <widget:makeButton>(parent, SWT.getPUSH())
-    button.setText(text)
-    button
-}
 
 traceline("about to make makeChatUI")
 
@@ -130,86 +171,84 @@ traceline("about to make makeChatUI")
  * considerations on the chatControllerMaker, as described in the
  * preface to the chatControllerMaker following the chatUIMaker
  * source:
+ *
+ * @return :near
  */
-def makeChatUI(chatController) :near {
-    def chatWin := <widget:makeShell>(currentDisplay)
-    chatWin.setText("eChat")
-    chatWin.setBounds(30, 30, 600, 300)
+function makeChatUI(chatController, { getElementById }) {
+    const chatWin = getElementById("eChat")
+    //@@ chatWin.setBounds(30, 30, 600, 300)
 
-    def winDisposeListener {
-        to widgetDisposed(event) :void {
+    const winDisposeListener = harden({
+        widgetDisposed(event) {
             chatController.leave()
-            interp.continueAtTop()
+            //@@ interp.continueAtTop()
         }
+    })
+    //@@ chatWin.addDisposeListener(winDisposeListener)
+
+    // all button presses are referred to the the chatController
+    function attachAction(button, verb) {
+        const listener = harden({
+            widgetSelected(event) { E.call(chatController, verb, [])}
+        })
+        button.setAttribute('type', 'button')
+        button.addEventListener('click', function(event) {
+            listener.widgetSelected(event)
+            event.preventDefault()
+        })
     }
-    chatWin.addDisposeListener(winDisposeListener)
 
-    # all button presses are referred to the the chatController
-    def attachAction(button, verb) :void {
-        def listener {
-            to widgetSelected(event) :void {E.call(chatController, verb, [])}
-        }
-        button.addSelectionListener(listener)
-    }
+    // Set Name Field
+    const setNameField = getElementById("setNameField")
+    // setNameField.setText("Type Name and Set")
 
-    # Set Name Field
-    def setNameField := <widget:makeText>(chatWin, SWT.getSINGLE() | SWT.getBORDER())
-    setNameField.setText("Type Name and Set")
-
-    # set name button
-    def setNameButton := makeButton(chatWin, "Set Your Name")
+    // set name button
+    const setNameButton = getElementById("setNameButton")
     attachAction(setNameButton, "setMyName")
 
-    # Offer Chat button
-    def offerChatButton := makeButton(chatWin, "Offer Chat")
+    // Offer Chat button
+    const offerChatButton = getElementById("offerChatButton")
     attachAction(offerChatButton, "offerSelf")
-    offerChatButton.setEnabled(false)
+    offerChatButton.disabled = true
 
-    # Find Friend Button
-    def findFriendButton := makeButton(chatWin, "Find Friend")
+    // Find Friend Button
+    const findFriendButton = getElementById("findFriendButton")
     attachAction(findFriendButton, "findFriend")
-    findFriendButton.setEnabled(false)
+    findFriendButton.disabled = true
 
-    # chat text area pane
-    def chatTextArea := <widget:makeText>(
-        chatWin, (SWT.getMULTI() | SWT.getWRAP()) | (SWT.getBORDER() | SWT.getV_SCROLL()))
-    chatTextArea.setEditable(false)
-    chatTextArea.setText("read conversation here")
+    // chat text area pane
+    const chatTextArea = getElementById("chatTextArea")
+    chatTextArea.setAttribute('readonly', true);
+    chatTextArea.value = "read conversation here"
 
-    # message pane
-    def nextMessageBox := <widget:makeText>(chatWin, SWT.getSINGLE() | SWT.getBORDER())
-    nextMessageBox.setText("type message here")
+    // message pane
+    const nextMessageBox = getElementById("nextMessageBox")
+    nextMessageBox.value = "type message here"
 
-    # Send Message button
-    def sendMessageButton := makeButton(chatWin, "Send Message")
+    // Send Message button
+    const sendMessageButton = getElementById("sendMessageButton")
     attachAction(sendMessageButton, "send")
-    sendMessageButton.setEnabled(false)
+    sendMessageButton.disabled = true
 
-    swtGrid`$chatWin:
-            $setNameField.X    $setNameButton $offerChatButton $findFriendButton
-            $chatTextArea.Y    >              >                >
-            $nextMessageBox    >              >                >
-            $sendMessageButton >              >                >`
+    //@@ chatWin.open()
+    // traceline("chatwin opened")
 
-
-    chatWin.open()
-    traceline("chatwin opened")
-
-    def chatUI {
-        to getChatWin() :near {chatWin}
-        to getNameButton() :near {setNameButton}
-        to getNameField() :near {setNameField}
-        to getOfferChatButton() :near {offerChatButton}
-        to getFindFriendButton() :near {findFriendButton}
-        to getChatTextArea() :near {chatTextArea}
-        to getNextMessageBox() :near {nextMessageBox}
-        to getSendMessageButton() :near {sendMessageButton}
-        to setButtonsForEstablishedConnection() :void {
-            sendMessageButton.setEnabled(true)
-            offerChatButton.setEnabled(false)
-            findFriendButton.setEnabled(false)
+    const chatUI = harden({
+        getChatWin: () => chatWin,
+        getNameButton: () => setNameButton,
+        getNameField: () => setNameField,
+        getOfferChatButton: () => offerChatButton,
+        getFindFriendButton: () => findFriendButton,
+        getChatTextArea: () => chatTextArea,
+        getNextMessageBox: () => nextMessageBox,
+        getSendMessageButton: () => sendMessageButton,
+        setButtonsForEstablishedConnection() {
+            sendMessageButton.disabled = false
+            offerChatButton.disabled = true
+            findFriendButton.disabled = true
         }
-    }
+    })
+    return chatUI
 }
 traceline("made makeChatUI")
 
@@ -258,87 +297,115 @@ traceline("made makeChatUI")
  *         All the effort to encrypt and decrypt these messages are
  *         performed invisibly by E for the programmer
  * </ul>
+ * @returns near
  */
-def makeChatController() :near {
-    def chatController
-    def chatUI := makeChatUI(chatController)
-    def myName
-    var myFriend := null
-    var myFriendName := null
-    var myAddressFile := null
-    traceline("initialized chatController");
-    def showMessage(senderName, message) :void {
+function makeChatController({ getElementById }) {
+    let myName
+    let myFriend = null
+    let myFriendName = null
+    let myAddressFile = null
+    /**
+     *
+     * @param {string} senderName
+     * @param {string} message
+     * @returns void
+     */
+    function showMessage(senderName, message) {
         chatUI.getChatTextArea().append(`$senderName says:    $message$\n$\n`)
     }
-    bind chatController {
-        # transmitting functions
-        to send() :void {
-            def nextMessage := chatUI.getNextMessageBox().getText()
+    const chatController = {
+        // transmitting functions
+        /**
+         * @returns undefined
+         */
+        async send() {
+            const nextMessage = chatUI.getNextMessageBox().getText()
             chatUI.getNextMessageBox().setText("")
             traceline("next message" + nextMessage)
-            myFriend <- receive(nextMessage)
+            myFriend = await receive(nextMessage)
             showMessage(myName, nextMessage)
-        }
-        to setMyName() :void {
-            chatUI.getNameButton().setEnabled(false)
-            chatUI.getOfferChatButton().setEnabled(true)
-            chatUI.getFindFriendButton().setEnabled(true)
-            chatUI.getNameField().setEditable(false)
-            bind myName := chatUI.getNameField().getText()
-        }
-        to offerSelf() :void {
-            myAddressFile := requestSaveFile(chatUI.getChatWin())
+        },
+        /**
+         * @returns undefined
+         */
+        setMyName() {
+            chatUI.getNameButton().disabled = true
+            chatUI.getOfferChatButton().disabled = false
+            chatUI.getFindFriendButton().disabled = false
+            chatUI.getNameField().setAttribute('readonly', true)
+            myName = chatUI.getNameField().value
+        },
+        /**
+         * @returns undefined
+         */
+        offerSelf() {
+            myAddressFile = requestSaveFile(chatUI.getChatWin())
             if (myAddressFile != null) {
                 offerMyAddress(myAddressFile,
                                makeURIFromObject(chatController))
             }
-        }
-        to leave() :void {
+        },
+        /**
+         * @returns undefined
+         */
+        leave() {
             if (myAddressFile != null) {
                 myAddressFile.delete(null)
             }
-        }
-        to receive(message) :void {
+        },
+        /**
+         * @returns undefined
+         */
+        receive(message) {
             showMessage(myFriendName, message)
-        }
-        to receiveFriend(friend, name) :String {
+        },
+        /**
+         * @returns string
+         */
+        receiveFriend(friend, name) {
             traceline("receiveFriend:" + friend + name)
-            myFriend := friend
-            myFriendName := name
+            myFriend = friend
+            myFriendName = name
             chatUI.setButtonsForEstablishedConnection()
             chatUI.getChatTextArea().setText(myFriendName + " has arrived\n\n")
-            Ref.whenBroken(myFriend, def observer(prom) :void {
+            myFriend.catch(_ => {
                 chatController.disconnect("disconnected")
             })
             traceline("received")
-            myName
-        }
-        to findFriend() :void {
-            def file := findFriendFile(chatUI.getChatWin())
-            if (file != null) {
-                def friendURI := file.getText()
-                def friend := getObjectFromURI(friendURI)
-                def nameVow := friend <- receiveFriend(chatController,
+            return myName
+        },
+        /**
+         * @returns undefined
+         */
+        async findFriend() {
+            const file = findFriendFile(chatUI.getChatWin())
+            if (file !== null) {
+                const friendURI = file.getText()
+                const friend = getObjectFromURI(friendURI)
+                const nameVow = E(friend).receiveFriend(chatController,
                                                        myName)
-                when (nameVow) -> done(name) :void {
+                (nameVow).then(name => {
                     chatController.receiveFriend(friend, name)
                     chatUI.setButtonsForEstablishedConnection()
-                } catch prob {
+                }).catch(prob => {
                     traceline("findFriend prob: " + prob + stackTrace(prob))
                     chatController.disconnect("friend is unreachable")
-                }
+                })
             }
-        }
-        to disconnect(desc) :void {
-            if (myFriendName == null) {
-                myFriendName := "the friend"
+        },
+        /**
+         * @returns undefined
+         */
+        disconnect(desc){
+            if (myFriendName === null) {
+                myFriendName = "the friend"
             }
             chatUI.getChatTextArea().append(`$myFriendName $desc$\n`)
-            myFriend := null
-            myFriendName := null
+            myFriend = null
+            myFriendName = null
         }
     }
+    const chatUI = makeChatUI(chatController, { getElementById })
+    traceline("initialized chatController");
+    return chatController
 }
-
-def controller := makeChatController()
-interp.blockAtTop()
