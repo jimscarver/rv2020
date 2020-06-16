@@ -11,6 +11,8 @@ import makeNodePath from './pathlib.js';
 const harden = x => Object.freeze(x);
 
 const rnodeExternalUrl = 'node3.testnet.rchain-dev.tk:40401';
+const validafterblocknumber = 206863;
+// const rnodeExternalUrl = '127.0.0.1:40401';
 
 export async function run(require, process) {
   console.log('generate key for deployment by this service');
@@ -26,7 +28,7 @@ export async function run(require, process) {
   const { rnodeDeploy } = rnode_grpc_js;
   require('./rnode-grpc-gen/js/DeployServiceV1_pb.js');  // get proto in scope
   const deployService = rnodeDeploy({ grpcLib, host: rnodeExternalUrl, protoSchema });
-  ensureDeploy(secKey, { deployService });
+  ensureDeploy(secKey, validafterblocknumber, { deployService });
 }
 
 
@@ -35,7 +37,7 @@ async function init({ cwd, randomBytes }) {
   if (exists(keyStore)) {
     console.log(`${keyStore} already exists`);
     const { deployKeyHex } = JSON.parse(keyStore.readFileSync());
-    return Buffer.from(deployKeyHex);
+    return Buffer.from(deployKeyHex, 'hex');
   }
 
   const secKey = randomBytes(32);
@@ -46,20 +48,22 @@ async function init({ cwd, randomBytes }) {
 }
 
 
-async function ensureDeploy(secretKey, { deployService }) {
-  const { ec } = elliptic;
-  const secp256k1 = new ec('secp256k1');
-  const deployKey = secp256k1.keyFromPrivate(secretKey);
-  console.log({deployKey: deployKey.getPublic('hex')});
+async function ensureDeploy(secretKey, validafterblocknumber, { deployService }) {
+  const keyInfo = rnode_grpc_js.getAddrFromPrivateKey(secretKey.toString('hex'));
+  console.log({deployKey: keyInfo.pubKey, eth: keyInfo.ethAddr });
 
   const deployData = {
-    term: 'Nil',
+    term: `
+    new log(\`rho:io:stderr\`) in {
+      log!("hi from rv2020")
+    }
+    `,
     phloprice: 1,
     phlolimit: 1000,
-    validafterblocknumber: 0,
+    validafterblocknumber,
   };
   const { signDeploy } = rnode_grpc_js;
-  const signed = signDeploy(deployKey, deployData);
+  const signed = signDeploy(secretKey, deployData);
   console.log({ signedDeploy: signed });
   console.log({ deployService });
   const result = await deployService.doDeploy(signed);
